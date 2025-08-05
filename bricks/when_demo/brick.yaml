@@ -1,0 +1,55 @@
+name: when_demo
+description: A demo brick showcasing the when clause functionality
+version: 0.1.0
+
+vars:
+  auth_method:
+    type: enum
+    values: [firebase, custom_jwt, no_auth]
+    default: firebase
+    prompt: Which authentication method do you want to use?
+
+  firebase_google:
+    type: boolean
+    default: true
+    prompt: Do you want to enable Google Sign-In with Firebase?
+    when: auth_method == firebase
+
+  firebase_apple:
+    type: boolean
+    default: true
+    prompt: Do you want to enable Apple Sign-In with Firebase?
+    when: auth_method == firebase
+
+  custom_jwt_secret:
+    type: string
+    prompt: What is your JWT secret key?
+    when: auth_method == custom_jwt
+
+  platform:
+    type: enum
+    values: [android, ios, both]
+    default: both
+    prompt: Which platform do you want to target?
+
+  android_package:
+    type: string
+    prompt: What is your Android package name?
+    when: platform in [android, both]
+
+  ios_bundle:
+    type: string
+    prompt: What is your iOS bundle identifier?
+    when: platform in [ios, both]
+
+  enable_analytics:
+    type: boolean
+    default: true
+    prompt: Do you want to enable analytics?
+
+  analytics_provider:
+    type: enum
+    values: [firebase_analytics, mixpanel, amplitude]
+    default: firebase_analytics
+    prompt: Which analytics provider do you want to use?
+    when: enable_analytics == true 

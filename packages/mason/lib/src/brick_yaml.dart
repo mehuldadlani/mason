@@ -140,6 +140,7 @@ class BrickVariableProperties {
     this.prompt,
     this.values,
     this.separator,
+    this.when,
   });
 
   /// {@macro brick_variable_properties}
@@ -150,12 +151,14 @@ class BrickVariableProperties {
     String? description,
     String? defaultValue,
     String? prompt,
+    String? when,
   }) : this(
-          type: BrickVariableType.string,
-          description: description,
-          defaultValue: defaultValue,
-          prompt: prompt,
-        );
+         type: BrickVariableType.string,
+         description: description,
+         defaultValue: defaultValue,
+         prompt: prompt,
+         when: when,
+       );
 
   /// {@macro brick_variable_properties}
   ///
@@ -165,12 +168,14 @@ class BrickVariableProperties {
     String? description,
     bool? defaultValue,
     String? prompt,
+    String? when,
   }) : this(
-          type: BrickVariableType.boolean,
-          description: description,
-          defaultValue: defaultValue,
-          prompt: prompt,
-        );
+         type: BrickVariableType.boolean,
+         description: description,
+         defaultValue: defaultValue,
+         prompt: prompt,
+         when: when,
+       );
 
   /// {@macro brick_variable_properties}
   ///
@@ -180,12 +185,14 @@ class BrickVariableProperties {
     String? description,
     num? defaultValue,
     String? prompt,
+    String? when,
   }) : this(
-          type: BrickVariableType.number,
-          description: description,
-          defaultValue: defaultValue,
-          prompt: prompt,
-        );
+         type: BrickVariableType.number,
+         description: description,
+         defaultValue: defaultValue,
+         prompt: prompt,
+         when: when,
+       );
 
   /// {@macro brick_variable_properties}
   ///
@@ -196,13 +203,15 @@ class BrickVariableProperties {
     String? description,
     String? defaultValue,
     String? prompt,
+    String? when,
   }) : this(
-          type: BrickVariableType.enumeration,
-          description: description,
-          defaultValue: defaultValue,
-          prompt: prompt,
-          values: values,
-        );
+         type: BrickVariableType.enumeration,
+         description: description,
+         defaultValue: defaultValue,
+         prompt: prompt,
+         values: values,
+         when: when,
+       );
 
   /// {@macro brick_variable_properties}
   ///
@@ -213,13 +222,15 @@ class BrickVariableProperties {
     String? description,
     List<String>? defaultValues,
     String? prompt,
+    String? when,
   }) : this(
-          type: BrickVariableType.array,
-          description: description,
-          defaultValues: defaultValues,
-          prompt: prompt,
-          values: values,
-        );
+         type: BrickVariableType.array,
+         description: description,
+         defaultValues: defaultValues,
+         prompt: prompt,
+         values: values,
+         when: when,
+       );
 
   /// {@macro brick_variable_properties}
   ///
@@ -229,12 +240,14 @@ class BrickVariableProperties {
     String? description,
     String? prompt,
     String? separator,
+    String? when,
   }) : this(
-          type: BrickVariableType.list,
-          description: description,
-          prompt: prompt,
-          separator: separator,
-        );
+         type: BrickVariableType.list,
+         description: description,
+         prompt: prompt,
+         separator: separator,
+         when: when,
+       );
 
   /// Converts [Map] to [BrickYaml]
   factory BrickVariableProperties.fromJson(Map<dynamic, dynamic> json) =>
@@ -269,6 +282,13 @@ class BrickVariableProperties {
   /// An optional separator used when [type] is:
   /// * [BrickVariableType.list]
   final String? separator;
+
+  /// An optional condition that determines whether this variable should be
+  /// prompted.
+  /// The condition is evaluated against previously collected variables.
+  /// Supports basic operators like ==, !=, in, not in.
+  /// Example: "auth_method == firebase"
+  final String? when;
 }
 
 /// {@template vars_converter}

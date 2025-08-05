@@ -94,6 +94,10 @@
         "default": {
           "type": ["string", "null"],
           "description": "An optional default value for the variable."
+        },
+        "when": {
+          "type": ["string", "null"],
+          "description": "An optional condition that determines whether this variable should be prompted. The condition is evaluated against previously collected variables. Supports basic operators like ==, !=, in, not in. Example: 'auth_method == firebase'"
         }
       },
       "additionalProperties": false
@@ -115,6 +119,10 @@
         "default": {
           "type": ["integer", "null"],
           "description": "An optional default value for the variable."
+        },
+        "when": {
+          "type": ["string", "null"],
+          "description": "An optional condition that determines whether this variable should be prompted. The condition is evaluated against previously collected variables. Supports basic operators like ==, !=, in, not in. Example: 'auth_method == firebase'"
         }
       },
       "additionalProperties": false
@@ -138,6 +146,10 @@
             "type": ["boolean", "null"],
             "description": "An optional default value for the variable."
           }
+        },
+        "when": {
+          "type": ["string", "null"],
+          "description": "An optional condition that determines whether this variable should be prompted. The condition is evaluated against previously collected variables. Supports basic operators like ==, !=, in, not in. Example: 'auth_method == firebase'"
         }
       },
       "additionalProperties": false
@@ -168,6 +180,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "when": {
+          "type": ["string", "null"],
+          "description": "An optional condition that determines whether this variable should be prompted. The condition is evaluated against previously collected variables. Supports basic operators like ==, !=, in, not in. Example: 'auth_method == firebase'"
         }
       },
       "additionalProperties": false,
@@ -203,6 +219,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "when": {
+          "type": ["string", "null"],
+          "description": "An optional condition that determines whether this variable should be prompted. The condition is evaluated against previously collected variables. Supports basic operators like ==, !=, in, not in. Example: 'auth_method == firebase'"
         }
       },
       "additionalProperties": false,
@@ -221,6 +241,10 @@
         },
         "prompt": {
           "$ref": "#/$defs/varPrompt"
+        },
+        "when": {
+          "type": ["string", "null"],
+          "description": "An optional condition that determines whether this variable should be prompted. The condition is evaluated against previously collected variables. Supports basic operators like ==, !=, in, not in. Example: 'auth_method == firebase'"
         }
       },
       "additionalProperties": false

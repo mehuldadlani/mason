@@ -50,7 +50,7 @@ class MakeCommand extends MasonCommand {
 
 class _MakeCommand extends MasonCommand {
   _MakeCommand(this._brick, {required ProcessSignal sigint, super.logger})
-      : _sigint = sigint {
+    : _sigint = sigint {
     argParser
       ..addOptions()
       ..addSeparator('${'-' * 79}\n');
@@ -111,10 +111,26 @@ class _MakeCommand extends MasonCommand {
         return ExitCode.usage.code;
       }
 
+      const conditionEvaluator = ConditionEvaluator();
+
       for (final entry in _brick.vars.entries) {
         final variable = entry.key;
         final properties = entry.value;
         if (vars.containsKey(variable)) continue;
+
+        // Check if this variable should be prompted based on the 'when'
+        // condition.
+        if (properties.when != null) {
+          final shouldPrompt = conditionEvaluator.evaluate(
+            properties.when!,
+            vars,
+          );
+          if (!shouldPrompt) {
+            // Skip this variable if the condition is not met
+            continue;
+          }
+        }
+
         final arg = results[variable] as String?;
         if (arg != null) {
           vars.addAll(<String, dynamic>{variable: _maybeDecode(arg)});
@@ -164,8 +180,8 @@ class _MakeCommand extends MasonCommand {
               response = logger.chooseAny(
                 prompt,
                 choices: choices,
-                defaultValues:
-                    (properties.defaultValues as List?)?.cast<String>(),
+                defaultValues: (properties.defaultValues as List?)
+                    ?.cast<String>(),
               );
             case BrickVariableType.list:
               response = logger.promptAny(
@@ -231,22 +247,20 @@ class _MakeCommand extends MasonCommand {
 
     final brickDirectoryPath = p.dirname(_brick.path!);
     final watcher = DirectoryWatcher(brickDirectoryPath);
-    final watchSubscription = watcher.events.listen(
-      (event) {
-        if (event.type == ChangeType.REMOVE) {
-          File(
-            p.join(
-              outputDir,
-              p.relative(
-                event.path,
-                from: p.join(brickDirectoryPath, BrickYaml.dir),
-              ),
+    final watchSubscription = watcher.events.listen((event) {
+      if (event.type == ChangeType.REMOVE) {
+        File(
+          p.join(
+            outputDir,
+            p.relative(
+              event.path,
+              from: p.join(brickDirectoryPath, BrickYaml.dir),
             ),
-          ).deleteSync(recursive: true);
-        }
-        _make();
-      },
-    );
+          ),
+        ).deleteSync(recursive: true);
+      }
+      _make();
+    });
 
     final signal = await _sigint.watch().first;
     await watchSubscription.cancel();
@@ -304,8 +318,9 @@ extension on BrickVariableType {
 extension on BrickVariableProperties {
   String toHelp() {
     final _type = '<${type.name}>';
-    final _defaultValue =
-        type == BrickVariableType.string ? '"$defaultValue"' : '$defaultValue';
+    final _defaultValue = type == BrickVariableType.string
+        ? '"$defaultValue"'
+        : '$defaultValue';
     final defaultsTo = '(defaults to $_defaultValue)';
     if (description != null && defaultValue != null) {
       return '$description $_type\n$defaultsTo';

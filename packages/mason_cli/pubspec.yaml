@@ -10,7 +10,7 @@ topics: [mason, cli, template, generator]
 funding: [https://github.com/sponsors/felangel]
 
 environment:
-  sdk: ^3.5.4
+  sdk: ^3.8.0
 
 dependencies:
   args: ^2.5.0

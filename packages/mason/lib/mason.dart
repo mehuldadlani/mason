@@ -16,6 +16,7 @@ export 'src/brick_yaml.dart'
         BrickVariableProperties,
         BrickVariableType,
         BrickYaml;
+export 'src/condition_evaluator.dart' show ConditionEvaluator;
 export 'src/bricks_json.dart' show BricksJson, CachedBrick;
 export 'src/bundler.dart' show createBundle, unpackBundle;
 export 'src/exception.dart' show BrickNotFoundException, MasonException;
